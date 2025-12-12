@@ -66,3 +66,16 @@ def safe_remove(path: Path) -> None:
     except Exception as e:
         messagebox.showerror("Delete Failed", f"Could not delete:\n{path}\n\n{e}")
 
+def is_hidden(p: Path) -> bool:
+    try:
+        if platform.system() == "Windows":
+            import ctypes
+
+            attrs = ctypes.windll.kernel32.GetFileAttributesW(str(p))
+            if attrs == -1:
+                return False
+            return bool(attrs & 2)  # FILE_ATTRIBUTE_HIDDEN
+        else:
+            return p.name.startswith('.')
+    except Exception:
+        return False
