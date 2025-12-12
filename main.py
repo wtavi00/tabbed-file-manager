@@ -34,3 +34,35 @@ def human_size(num: int) -> str:
         num /= 1024.0
     return f"{num:.1f} EB"
 
+def open_with_systtem(path: Path) -> None:
+    try:
+        if platform .system() == "Windows":
+            os.startfile(str(path))
+        elif platform.system() == "Darwin":
+            subprocess.run(["open",str(path)], check=False)
+        else:
+            subprocess.run("xdg-open",str(path)], Check=False)
+    except Exception as e:
+        messagebox.showerror("Open Failed", f"could not open:\n{path}\n\n{e}")
+
+def safe_remove(path: Path) -> None:
+    if not path.exists():
+        return
+    try:
+        if path.is_dir():
+            if any(path.iterdir()):
+                if not messagebox.askyesno(
+                    "Delete Folder",
+                    f"'{path.name}' is not empty. Delete it and ALL of its contents?",
+                    icon=messagebox.WARNING,
+                    default=messagebox.NO,
+                ):
+                    return
+                shutil.rmtree(path)
+            else:
+                path.rmdir()
+        else:
+            path.unlink()
+    except Exception as e:
+        messagebox.showerror("Delete Failed", f"Could not delete:\n{path}\n\n{e}")
+
