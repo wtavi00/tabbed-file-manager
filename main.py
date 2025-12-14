@@ -91,3 +91,23 @@ class WorkerThread(threading.Thread):
         self.result_q = result_q
         self._stop = threading.Event()
 
+    def run(self):
+        while not self._stop.is_set():
+            try:
+                fn, args, kwargs = self.work_q.get(timeout=0.1)
+            except queue.Empty:
+                continue
+            try:
+                res = fn(*args, **kwargs)
+                # Post success result (callable to run in main thread)
+                if self.result_q is not None:
+                    self.result_q.put((lambda r=res: r, ()))
+            except Exception as e:
+                if self.result_q is not None:
+                    self.result_q.put((lambda e=e: messagebox.showerror("Background Error", str(e)), ()))
+            finally:
+                self.work_q.task_done()
+
+    def stop(self):
+        self._stop.set()
+        
