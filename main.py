@@ -79,3 +79,15 @@ def is_hidden(p: Path) -> bool:
             return p.name.startswith('.')
     except Exception:
         return False
+
+# ----------------------------- Background Task Runner ----------------------------- #
+class WorkerThread(threading.Thread):
+    """A simple worker thread that runs callables from a queue and
+    posts results to a result queue."""
+
+    def __init__(self, work_q: "queue.Queue[Tuple[callable, tuple, dict]]", result_q: "queue.Queue[Tuple[callable, tuple]]") -> None:
+        super().__init__(daemon=True)
+        self.work_q = work_q
+        self.result_q = result_q
+        self._stop = threading.Event()
+
