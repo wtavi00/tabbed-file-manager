@@ -142,3 +142,26 @@ class FileManagerApp(tk.Tk):
         # Poll for background results
         self.after(100, self._poll_results)
         
+    def create_menus(self):
+        menubar = tk.Menu(self)
+        file_menu = tk.Menu(menubar, tearoff=False)
+        file_menu.add_command(label="New Tab", command=lambda: self.add_tab(Path.home()), accelerator="Ctrl-T")
+        file_menu.add_command(label="Open Folder...", command=self.open_folder_dialog, accelerator="Ctrl-O")
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit", command=self.quit)
+        menubar.add_cascade(label="File", menu=file_menu)
+
+        tools_menu = tk.Menu(menubar, tearoff=False)
+        tools_menu.add_command(label="Create ZIP of selection", command=self.create_zip_of_selection)
+        tools_menu.add_command(label="Extract ZIP...", command=self.extract_zip_dialog)
+        menubar.add_cascade(label="Tools", menu=tools_menu)
+
+        help_menu = tk.Menu(menubar, tearoff=False)
+        help_menu.add_command(label="About", command=lambda: messagebox.showinfo("About", "Python File Manager\nImproved\n"))
+        menubar.add_cascade(label="Help", menu=help_menu)
+
+        self.config(menu=menubar)
+        # Bind shortcuts
+        self.bind_all('<Control-t>', lambda e: self.add_tab(Path.home()))
+        self.bind_all('<Control-o>', lambda e: self.open_folder_dialog())
+
