@@ -111,3 +111,34 @@ class WorkerThread(threading.Thread):
     def stop(self):
         self._stop.set()
         
+# ----------------------------- Main App ----------------------------- #
+class FileManagerApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Python File Manager")
+        self.geometry("1200x720")
+        self.minsize(900, 520)
+
+        # Global clipboard supports multiple items
+        self.clipboard_items: List[Tuple[Path, str]] = []  # (path, action)
+
+        # Worker queues for background tasks like search and zip
+        self.work_q: "queue.Queue[Tuple[callable, tuple, dict]]" = queue.Queue()
+        self.result_q: "queue.Queue[Tuple[callable, tuple]]" = queue.Queue()
+        self.worker = WorkerThread(self.work_q, self.result_q)
+        self.worker.start()
+
+        # Notebook tabs for multiple folders
+        self.notebook = ttk.Notebook(self)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
+        self.tabs: dict[int, dict] = {}
+
+        # Add initial tab
+        self.add_tab(Path.home())
+
+        # Menu
+        self.create_menus()
+
+        # Poll for background results
+        self.after(100, self._poll_results)
+        
