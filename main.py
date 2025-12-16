@@ -165,3 +165,12 @@ class FileManagerApp(tk.Tk):
         self.bind_all('<Control-t>', lambda e: self.add_tab(Path.home()))
         self.bind_all('<Control-o>', lambda e: self.open_folder_dialog())
 
+    def add_tab(self, start_path: Path):
+        frame = ttk.Frame(self.notebook)
+        self.notebook.add(frame, text=str(start_path))
+        idx = len(self.tabs)
+        # Create UI inside tab
+        tab = FileManagerTab(frame, start_path, self)
+        self.tabs[idx] = {'frame': frame, 'tab': tab}
+        self.notebook.select(frame)
+
