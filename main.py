@@ -207,3 +207,21 @@ class FileManagerApp(tk.Tk):
         self.work_q.put((do_zip, (), {}))
         messagebox.showinfo("ZIP", f"Creating {dest_path} in background.")
 
+    def extract_zip_dialog(self):
+        path = filedialog.askopenfilename(filetypes=[('ZIP files', '*.zip')])
+        if not path:
+            return
+        dest = filedialog.askdirectory()
+        if not dest:
+            return
+        pathp = Path(path)
+        destp = Path(dest)
+
+        def do_extract():
+            with zipfile.ZipFile(pathp, 'r') as zf:
+                zf.extractall(destp)
+            return None
+
+        self.work_q.put((do_extract, (), {}))
+        messagebox.showinfo("Extract", f"Extracting {pathp} to {destp} in background.")
+        
