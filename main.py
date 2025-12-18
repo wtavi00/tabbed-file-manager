@@ -174,3 +174,8 @@ class FileManagerApp(tk.Tk):
         self.tabs[idx] = {'frame': frame, 'tab': tab}
         self.notebook.select(frame)
 
+    def open_folder_dialog(self):
+        d = filedialog.askdirectory(initialdir=str(Path.home()))
+        if d:
+            self.add_tab(Path(d))
+
