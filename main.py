@@ -179,3 +179,31 @@ class FileManagerApp(tk.Tk):
         if d:
             self.add_tab(Path(d))
 
+    def create_zip_of_selection(self):
+        tab = self._current_tab()
+        if not tab:
+            return
+        sel = tab.current_selection()
+        if not sel:
+            messagebox.showinfo("ZIP", "Select items to archive.")
+            return
+        dest = filedialog.asksaveasfilename(defaultextension='.zip', filetypes=[('ZIP files', '*.zip')])
+        if not dest:
+            return
+        dest_path = Path(dest)
+
+        def do_zip():
+            with zipfile.ZipFile(dest_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+                for p in sel:
+                    if p.is_dir():
+                        for root, dirs, files in os.walk(p):
+                            for f in files:
+                                fp = Path(root) / f
+                                zf.write(fp, arcname=str(fp.relative_to(p.parent)))
+                    else:
+                        zf.write(p, arcname=str(p.name))
+            return None
+
+        self.work_q.put((do_zip, (), {}))
+        messagebox.showinfo("ZIP", f"Creating {dest_path} in background.")
+
