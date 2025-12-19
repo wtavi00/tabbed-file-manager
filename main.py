@@ -225,3 +225,17 @@ class FileManagerApp(tk.Tk):
         self.work_q.put((do_extract, (), {}))
         messagebox.showinfo("Extract", f"Extracting {pathp} to {destp} in background.")
         
+    def _current_tab(self) -> Optional['FileManagerTab']:
+        if not self.notebook.tabs():
+            return None
+        cur = self.notebook.select()
+        for info in self.tabs.values():
+            if str(info['frame']) == cur:
+                return info['tab']
+        # fallback: match by index
+        sel = self.notebook.index(cur)
+        info = self.tabs.get(sel)
+        if info:
+            return info['tab']
+        return None
+
