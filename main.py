@@ -239,3 +239,17 @@ class FileManagerApp(tk.Tk):
             return info['tab']
         return None
 
+    def _poll_results(self):
+        try:
+            while True:
+                fn, args = self.result_q.get_nowait()
+                try:
+                    fn(*args)
+                except Exception:
+                    pass
+                self.result_q.task_done()
+        except queue.Empty:
+            pass
+        self.after(100, self._poll_results)
+
+
