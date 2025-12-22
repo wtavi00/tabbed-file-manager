@@ -252,4 +252,10 @@ class FileManagerApp(tk.Tk):
             pass
         self.after(100, self._poll_results)
 
+    def quit(self):
+        try:
+            self.worker.stop()
+        except Exception:
+            pass
+        super().quit()
 
