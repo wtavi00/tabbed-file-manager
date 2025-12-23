@@ -10,4 +10,9 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 - **Drag & Drop**: Internal drag-and-drop support for moving files between folders
 - **Search**: Background search with wildcard pattern matching across directories
 
-  
+### Advanced Features
+- **ZIP Operations**: Create archives from selected files/folders and extract ZIP files
+- **File Preview**: Built-in preview for images (with Pillow) and text files
+- **Multi-Selection**: Perform operations on multiple files simultaneously
+- **Smart Clipboard**: Copy/cut multiple items and paste them in any folder
+- **Context Menu**: Right-click menu for quick access to common operations
