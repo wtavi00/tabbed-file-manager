@@ -259,3 +259,54 @@ class FileManagerApp(tk.Tk):
             pass
         super().quit()
 
+class FileManagerTab:
+    def __init__(self, parent, start_path: Path, app: FileManagerApp):
+        self.parent = parent
+        self.app = app
+        self.current_dir = start_path.resolve()
+        self._history: List[Path] = []
+        self._future: List[Path] = []
+        self._list_cache: dict = {}
+
+        # Layout: top toolbar, main paned (left tree / right main area)
+        self.toolbar = ttk.Frame(parent, padding=(6, 6))
+        self.toolbar.pack(fill=tk.X)
+
+        self.btn_back = ttk.Button(self.toolbar, text="◀", width=3, command=self.go_back)
+        self.btn_forward = ttk.Button(self.toolbar, text="▶", width=3, command=self.go_forward)
+        self.btn_up = ttk.Button(self.toolbar, text="↑", width=3, command=self.go_up)
+        self.btn_refresh = ttk.Button(self.toolbar, text="⟳", width=3, command=self.refresh)
+        self.btn_back.pack(side=tk.LEFT, padx=2)
+        self.btn_forward.pack(side=tk.LEFT, padx=2)
+        self.btn_up.pack(side=tk.LEFT, padx=2)
+        self.btn_refresh.pack(side=tk.LEFT, padx=6)
+
+        ttk.Label(self.toolbar, text="Path:").pack(side=tk.LEFT)
+        self.address_var = tk.StringVar(value=str(self.current_dir))
+        self.address_entry = ttk.Entry(self.toolbar, textvariable=self.address_var)
+        self.address_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=6)
+        ttk.Button(self.toolbar, text="Go", command=self.go_to_address).pack(side=tk.LEFT, padx=4)
+
+        # Main paned window
+        main_paned = ttk.PanedWindow(parent, orient=tk.HORIZONTAL)
+        main_paned.pack(fill=tk.BOTH, expand=True)
+
+        # Left: folder tree
+        left = ttk.Frame(main_paned)
+        left.columnconfigure(0, weight=1)
+        left.rowconfigure(0, weight=1)
+        self.tree = ttk.Treeview(left, columns=("#type",), displaycolumns=())
+        self.tree.heading('#0', text='Folders')
+        self.tree.bind('<<TreeviewOpen>>', self.on_tree_open)
+        self.tree.bind('<<TreeviewSelect>>', self.on_tree_select)
+        tree_scroll = ttk.Scrollbar(left, orient=tk.VERTICAL, command=self.tree.yview)
+        self.tree.configure(yscrollcommand=tree_scroll.set)
+        self.tree.grid(row=0, column=0, sticky='nsew')
+        tree_scroll.grid(row=0, column=1, sticky='ns')
+        main_paned.add(left, weight=1)
+
+        # Right: notebook split between file list and preview
+        right = ttk.Frame(main_paned)
+        right.columnconfigure(0, weight=1)
+        right.rowconfigure(0, weight=1)
+
