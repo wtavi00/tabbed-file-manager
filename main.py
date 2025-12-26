@@ -310,3 +310,20 @@ class FileManagerTab:
         right.columnconfigure(0, weight=1)
         right.rowconfigure(0, weight=1)
 
+        # Action bar for right pane
+        action_bar = ttk.Frame(right)
+        action_bar.grid(row=0, column=0, sticky='ew', pady=(4, 0))
+        action_bar.columnconfigure(10, weight=1)
+        ttk.Button(action_bar, text="New Folder", command=self.new_folder).grid(row=0, column=0, padx=2)
+        ttk.Button(action_bar, text="Rename", command=self.rename_selected).grid(row=0, column=1, padx=2)
+        ttk.Button(action_bar, text="Delete", command=self.delete_selected).grid(row=0, column=2, padx=2)
+        ttk.Button(action_bar, text="Copy", command=lambda: self.copy_or_cut('copy')).grid(row=0, column=3, padx=2)
+        ttk.Button(action_bar, text="Cut", command=lambda: self.copy_or_cut('cut')).grid(row=0, column=4, padx=2)
+        ttk.Button(action_bar, text="Paste", command=self.paste_here).grid(row=0, column=5, padx=2)
+        ttk.Button(action_bar, text="Open", command=self.open_selected).grid(row=0, column=6, padx=2)
+        ttk.Button(action_bar, text="Search", command=self.open_search_dialog).grid(row=0, column=7, padx=2)
+
+        # Split: list and preview
+        inner_paned = ttk.PanedWindow(right, orient=tk.HORIZONTAL)
+        inner_paned.grid(row=1, column=0, sticky='nsew')
+
