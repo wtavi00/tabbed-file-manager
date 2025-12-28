@@ -314,6 +314,7 @@ class FileManagerTab:
         action_bar = ttk.Frame(right)
         action_bar.grid(row=0, column=0, sticky='ew', pady=(4, 0))
         action_bar.columnconfigure(10, weight=1)
+        
         ttk.Button(action_bar, text="New Folder", command=self.new_folder).grid(row=0, column=0, padx=2)
         ttk.Button(action_bar, text="Rename", command=self.rename_selected).grid(row=0, column=1, padx=2)
         ttk.Button(action_bar, text="Delete", command=self.delete_selected).grid(row=0, column=2, padx=2)
@@ -343,8 +344,18 @@ class FileManagerTab:
         self.list.bind('<Delete>', lambda e: self.delete_selected())
         self.list.bind('<<TreeviewSelect>>', lambda e: self.update_status())
         self.list.bind('<Button-3>', self.show_context_menu)
+        
         # enable simple drag (start)
         self.list.bind('<ButtonPress-1>', self._on_list_button_press)
         self.list.bind('<B1-Motion>', self._on_list_b1_motion)
         self.list.bind('<ButtonRelease-1>', self._on_list_button_release)
         
+        list_scroll_y = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.list.yview)
+        list_scroll_x = ttk.Scrollbar(list_frame, orient=tk.HORIZONTAL, command=self.list.xview)
+        
+        self.list.configure(yscrollcommand=list_scroll_y.set, xscrollcommand=list_scroll_x.set)
+        self.list.grid(row=0, column=0, sticky='nsew')
+        
+        list_scroll_y.grid(row=0, column=1, sticky='ns')
+        list_scroll_x.grid(row=1, column=0, sticky='ew')
+        inner_paned.add(list_frame, weight=3)
