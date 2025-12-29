@@ -16,3 +16,11 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 - **Multi-Selection**: Perform operations on multiple files simultaneously
 - **Smart Clipboard**: Copy/cut multiple items and paste them in any folder
 - **Context Menu**: Right-click menu for quick access to common operations
+
+### Navigation
+- Back/Forward history navigation
+- Up button to navigate to parent directory
+- Address bar with direct path entry
+- Tree view with expandable folder hierarchy
+
+  
