@@ -359,3 +359,14 @@ class FileManagerTab:
         list_scroll_y.grid(row=0, column=1, sticky='ns')
         list_scroll_x.grid(row=1, column=0, sticky='ew')
         inner_paned.add(list_frame, weight=3)
+
+        # Preview pane
+        preview_frame = ttk.Frame(inner_paned)
+        preview_frame.columnconfigure(0, weight=1)
+        preview_frame.rowconfigure(0, weight=1)
+        self.preview_label = ttk.Label(preview_frame, text='Preview', anchor='center')
+        self.preview_label.grid(row=0, column=0, sticky='nsew')
+        inner_paned.add(preview_frame, weight=2)
+
+        main_paned.add(right, weight=3)
+
