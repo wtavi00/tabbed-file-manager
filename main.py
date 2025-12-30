@@ -370,3 +370,20 @@ class FileManagerTab:
 
         main_paned.add(right, weight=3)
 
+        # Status bar
+        self.status_var = tk.StringVar(value='Ready')
+        status = ttk.Label(parent, textvariable=self.status_var, anchor=tk.W, relief=tk.SUNKEN, padding=(8, 4))
+        status.pack(fill=tk.X)
+
+        # Context menu
+        self.menu = tk.Menu(parent, tearoff=False)
+        self.menu.add_command(label='Open', command=self.open_selected)
+        self.menu.add_separator()
+        self.menu.add_command(label='Copy', command=lambda: self.copy_or_cut('copy'))
+        self.menu.add_command(label='Cut', command=lambda: self.copy_or_cut('cut'))
+        self.menu.add_command(label='Paste', command=self.paste_here)
+        self.menu.add_separator()
+        self.menu.add_command(label='Rename', command=self.rename_selected)
+        self.menu.add_command(label='Delete', command=self.delete_selected)
+        self.menu.add_command(label='Create ZIP', command=self.create_zip_of_selection)
+
