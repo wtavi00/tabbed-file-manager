@@ -332,13 +332,16 @@ class FileManagerTab:
         list_frame = ttk.Frame(inner_paned)
         list_frame.columnconfigure(0, weight=1)
         list_frame.rowconfigure(0, weight=1)
+        
         self.list = ttk.Treeview(list_frame, columns=("size", "type", "modified"), show='headings', selectmode='extended')
         self.list.heading('size', text='Size')
         self.list.heading('type', text='Type')
         self.list.heading('modified', text='Modified')
+        
         self.list.column('size', width=100, anchor=tk.E)
         self.list.column('type', width=140, anchor=tk.W)
         self.list.column('modified', width=160, anchor=tk.W)
+        
         self.list.bind('<Double-1>', lambda e: self.open_selected())
         self.list.bind('<Return>', lambda e: self.open_selected())
         self.list.bind('<Delete>', lambda e: self.delete_selected())
@@ -358,15 +361,41 @@ class FileManagerTab:
         
         list_scroll_y.grid(row=0, column=1, sticky='ns')
         list_scroll_x.grid(row=1, column=0, sticky='ew')
+        
         inner_paned.add(list_frame, weight=3)
 
         # Preview pane
         preview_frame = ttk.Frame(inner_paned)
         preview_frame.columnconfigure(0, weight=1)
         preview_frame.rowconfigure(0, weight=1)
+        
         self.preview_label = ttk.Label(preview_frame, text='Preview', anchor='center')
         self.preview_label.grid(row=0, column=0, sticky='nsew')
+        
         inner_paned.add(preview_frame, weight=2)
 
         main_paned.add(right, weight=3)
+        
+        # Status bar
+        self.status_var = tk.StringVar(value='Ready')
+        
+        status = ttk.Label(parent, textvariable=self.status_var, anchor=tk.W, relief=tk.SUNKEN, padding=(8, 4))
+        status.pack(fill=tk.X)
+
+        # Context menu
+        self.menu = tk.Menu(parent, tearoff=False)
+        self.menu.add_command(label='Open', command=self.open_selected)
+        
+        self.menu.add_separator()
+        
+        self.menu.add_command(label='Copy', command=lambda: self.copy_or_cut('copy'))
+        self.menu.add_command(label='Cut', command=lambda: self.copy_or_cut('cut'))
+        self.menu.add_command(label='Paste', command=self.paste_here)
+        
+        self.menu.add_separator()
+        
+        self.menu.add_command(label='Rename', command=self.rename_selected)
+        self.menu.add_command(label='Delete', command=self.delete_selected)
+        self.menu.add_command(label='Create ZIP', command=self.create_zip_of_selection)
+
 
