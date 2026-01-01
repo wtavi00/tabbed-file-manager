@@ -28,3 +28,10 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 ### Python Version
 - Python 3.7 or higher
 
+### Dependencies
+- **tkinter** (usually included with Python)
+- **Pillow** (optional, for image previews)
+  ```bash
+  pip install Pillow
+  ```
+
