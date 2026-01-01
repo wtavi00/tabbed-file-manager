@@ -23,4 +23,8 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 - Address bar with direct path entry
 - Tree view with expandable folder hierarchy
 
-  
+## Requirements
+
+### Python Version
+- Python 3.7 or higher
+
