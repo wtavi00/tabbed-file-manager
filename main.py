@@ -398,4 +398,11 @@ class FileManagerTab:
         self.menu.add_command(label='Delete', command=self.delete_selected)
         self.menu.add_command(label='Create ZIP', command=self.create_zip_of_selection)
 
+        # initialize tree and list
+        self.populate_tree_root(self.current_dir)
+        self.populate_list(self.current_dir)
 
+        # Variables for drag
+        self._drag_start_iid = None
+        self._dragging = False
+        
