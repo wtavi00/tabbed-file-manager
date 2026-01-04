@@ -406,3 +406,23 @@ class FileManagerTab:
         self._drag_start_iid = None
         self._dragging = False
         
+    # ----------------------- Tree methods ----------------------- #
+    def populate_tree_root(self, focus_path: Path):
+        self.tree.delete(*self.tree.get_children(''))
+        try:
+            if platform.system() == 'Windows':
+                from string import ascii_uppercase
+                import ctypes
+                bitmask = ctypes.windll.kernel32.GetLogicalDrives()
+                for i, letter in enumerate(ascii_uppercase):
+                    if bitmask & (1 << i):
+                        drv = f"{letter}:/"
+                        node = self.tree.insert('', 'end', text=drv, values=('drive',), open=False)
+                        self.tree.insert(node, 'end', text='loading', values=('loading',))
+            else:
+                node = self.tree.insert('', 'end', text='/', values=('root',), open=True)
+                self.tree.insert(node, 'end', text='loading', values=('loading',))
+            self.expand_to_path(focus_path)
+        except Exception:
+            pass
+
