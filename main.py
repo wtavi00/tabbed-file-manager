@@ -426,3 +426,17 @@ class FileManagerTab:
         except Exception:
             pass
 
+    def expand_to_path(self, path: Path):
+        parts = path.resolve().parts
+        parent = ''
+        if platform.system() == 'Windows':
+            root_text = f"{Path(parts[0]).drive}/".replace('\\', '/')
+            for n in self.tree.get_children(''):
+                if self.tree.item(n, 'text').lower() == root_text.lower():
+                    parent = n
+                    break
+            start_index = 1
+        else:
+            parent = self.tree.get_children('')[0]
+            start_index = 1
+
