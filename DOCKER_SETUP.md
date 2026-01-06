@@ -12,3 +12,16 @@ This guide explains how to run the Python File Manager in a Docker container.
 
 **Recommendation:** For the best experience, run the file manager directly on your host system with `python main.py`.
 
+## Files Included
+
+- `Dockerfile` - Container definition
+- `docker-compose.yml` - Docker Compose configuration
+- `requirements.txt` - Python dependencies
+
+## Prerequisites
+
+- Docker installed ([Get Docker](https://docs.docker.com/get-docker/))
+- Docker Compose installed
+- X11 server running (for GUI display)
+
+- 
