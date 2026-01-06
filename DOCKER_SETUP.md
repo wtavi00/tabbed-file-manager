@@ -24,4 +24,22 @@ This guide explains how to run the Python File Manager in a Docker container.
 - Docker Compose installed
 - X11 server running (for GUI display)
 
-- 
+
+## Setup Instructions
+
+### Linux
+
+1. **Allow X11 connections:**
+   ```bash
+   xhost +local:docker
+   ```
+
+2. **Build and run:**
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **When finished, restore X11 security:**
+   ```bash
+   xhost -local:docker
+   ```
