@@ -43,3 +43,29 @@ This guide explains how to run the Python File Manager in a Docker container.
    ```bash
    xhost -local:docker
    ```
+   
+### macOS
+
+   **Install XQuartz:**
+   ```bash
+   brew install --cask xquartz
+   ```
+
+   **Start XQuartz and configure:**
+   - Open XQuartz
+   - Go to Preferences > Security
+   - Enable "Allow connections from network clients"
+   - Restart XQuartz
+
+   **Allow X11 connections:**
+   ```bash
+   xhost + 127.0.0.1
+   ```
+   **Set DISPLAY variable:**
+   ```bash
+   export DISPLAY=host.docker.internal:0
+   ```
+   **Build and run:**
+   ```bash
+   docker-compose up --build
+   ```
