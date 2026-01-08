@@ -456,3 +456,7 @@ class FileManagerTab:
         except Exception:
             pass
 
+    def on_tree_open(self, event=None):
+        node = self.tree.focus()
+        self.on_tree_open_node(node)
+        
