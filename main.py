@@ -439,4 +439,20 @@ class FileManagerTab:
         else:
             parent = self.tree.get_children('')[0]
             start_index = 1
+        for p in parts[start_index:]:
+            self.on_tree_open_node(parent)
+            found = None
+            for child in self.tree.get_children(parent):
+                if self.tree.item(child, 'text') == p:
+                    found = child
+                    break
+            if found is None:
+                break
+            parent = found
+            self.tree.item(parent, open=True)
+        try:
+            self.tree.selection_set(parent)
+            self.tree.see(parent)
+        except Exception:
+            pass
 
