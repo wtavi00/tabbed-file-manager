@@ -69,3 +69,19 @@ This guide explains how to run the Python File Manager in a Docker container.
    ```bash
    docker-compose up --build
    ```
+
+### Windows
+
+Running GUI applications in Docker on Windows is complex and not recommended. Instead:
+
+**Option 1: Use WSL2 (Recommended)**
+1. Install WSL2 with Ubuntu
+2. Install VcXsrv or X410 for X11
+3. Follow Linux instructions within WSL2
+
+**Option 2: Run Natively (Best)**
+```bash
+pip install Pillow
+python main.py
+```
+
