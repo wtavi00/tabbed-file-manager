@@ -35,3 +35,14 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
   pip install Pillow
   ```
 
+## Installation
+
+1. Clone or download the repository
+2. Install optional dependencies:
+   ```bash
+   pip install Pillow
+   ```
+3. Run the application:
+   ```bash
+   python main.py
+   ```
