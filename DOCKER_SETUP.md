@@ -85,3 +85,20 @@ pip install Pillow
 python main.py
 ```
 
+## Manual Docker Commands
+
+If you prefer not to use docker-compose:
+
+### Build the image:
+```bash
+docker build -t python-file-manager .
+```
+
+### Run the container (Linux):
+```bash
+docker run -it --rm \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $(pwd)/data:/data \
+  python-file-manager
+```
