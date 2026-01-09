@@ -460,3 +460,7 @@ class FileManagerTab:
         node = self.tree.focus()
         self.on_tree_open_node(node)
         
+    def on_tree_open_node(self, node):
+        children = self.tree.get_children(node)
+        if not children:
+            return
