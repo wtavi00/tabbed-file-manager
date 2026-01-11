@@ -102,3 +102,12 @@ docker run -it --rm \
   -v $(pwd)/data:/data \
   python-file-manager
 ```
+
+### Run the container (macOS):
+```bash
+docker run -it --rm \
+  -e DISPLAY=host.docker.internal:0 \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $(pwd)/data:/data \
+  python-file-manager
+```
