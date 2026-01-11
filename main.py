@@ -464,3 +464,15 @@ class FileManagerTab:
         children = self.tree.get_children(node)
         if not children:
             return
+        if self.tree.item(children[0], 'values') == ('loading',):
+            self.tree.delete(children[0])
+            base_path = self.get_node_path(node)
+            try:
+                entries = sorted([p for p in base_path.iterdir() if p.is_dir()], key=lambda x: x.name.lower())
+            except Exception:
+                entries = []
+            for p in entries:
+                if is_hidden(p):
+                    continue
+                sub = self.tree.insert(node, 'end', text=p.name, values=('dir',), open=False)
+                self.tree.insert(sub, 'end', text='loading', values=('loading',))
