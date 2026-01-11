@@ -46,3 +46,26 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
    ```bash
    python main.py
    ```
+
+## Usage
+
+### Basic Operations
+
+**Creating a New Folder**
+- Click the "New Folder" button in the action bar
+- Enter the folder name when prompted
+
+**Renaming Files/Folders**
+- Select an item and click "Rename"
+- Or right-click and select "Rename" from the context menu
+
+**Copying/Moving Files**
+1. Select one or more items
+2. Click "Copy" or "Cut"
+3. Navigate to the destination folder
+4. Click "Paste"
+
+**Deleting Files/Folders**
+- Select items and press Delete key
+- Or click the "Delete" button
+- Confirm the deletion when prompted
