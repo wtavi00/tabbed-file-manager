@@ -476,3 +476,10 @@ class FileManagerTab:
                     continue
                 sub = self.tree.insert(node, 'end', text=p.name, values=('dir',), open=False)
                 self.tree.insert(sub, 'end', text='loading', values=('loading',))
+
+    def on_tree_select(self, event=None):
+        node = self.tree.focus()
+        path = self.get_node_path(node)
+        if path:
+            self.navigate(path)
+
