@@ -483,3 +483,16 @@ class FileManagerTab:
         if path:
             self.navigate(path)
 
+    def get_node_path(self, node) -> Optional[Path]:
+        if not node:
+            return None
+        parts = []
+        while node:
+            text = self.tree.item(node, 'text')
+            parts.insert(0, text)
+            node = self.tree.parent(node)
+        if platform.system() == 'Windows':
+            p = Path(parts[0])
+            for seg in parts[1:]:
+                p = p / seg
+            return p
