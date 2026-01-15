@@ -496,3 +496,10 @@ class FileManagerTab:
             for seg in parts[1:]:
                 p = p / seg
             return p
+        else:
+            p = Path('/'
+                     )
+            for seg in parts[1:]:
+                p = p / seg
+            return p
+
