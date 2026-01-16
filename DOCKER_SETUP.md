@@ -111,3 +111,31 @@ docker run -it --rm \
   -v $(pwd)/data:/data \
   python-file-manager
 ```
+
+## Directory Structure
+
+```
+python-file-manager/
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── main.py
+├── README.md
+├── DOCKER_SETUP.md
+└── data/              # Mounted volume for file operations
+```
+
+## Troubleshooting
+
+### Error: "cannot open display"
+
+**Linux:**
+```bash
+xhost +local:docker
+echo $DISPLAY  # Should show something like :0 or :1
+```
+
+**macOS:**
+- Ensure XQuartz is running
+- Check DISPLAY variable: `echo $DISPLAY`
+- Try: `export DISPLAY=host.docker.internal:0`
