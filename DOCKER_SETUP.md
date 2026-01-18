@@ -139,3 +139,26 @@ echo $DISPLAY  # Should show something like :0 or :1
 - Ensure XQuartz is running
 - Check DISPLAY variable: `echo $DISPLAY`
 - Try: `export DISPLAY=host.docker.internal:0`
+
+### GUI appears but is very slow
+
+This is normal for X11 forwarding. Consider running natively for better performance.
+
+### Permission denied errors
+
+```bash
+# Give Docker access to X11
+xhost +local:docker
+
+# Or for specific user (more secure)
+xhost +SI:localuser:$(whoami)
+```
+
+### Container can't access files
+
+Check volume mounts in `docker-compose.yml`:
+```yaml
+volumes:
+  - ./data:/data          # Current directory's data folder
+  - ${HOME}:/host-home    # Your home directory
+```
