@@ -162,3 +162,16 @@ volumes:
   - ./data:/data          # Current directory's data folder
   - ${HOME}:/host-home    # Your home directory
 ```
+
+## Security Considerations
+
+**X11 forwarding poses security risks:**
+- The `xhost +local:docker` command allows any local Docker container to access your display
+- Use more restrictive permissions when possible
+- Always run `xhost -local:docker` when finished
+
+**Better alternative:**
+```bash
+# More secure: Allow only specific user
+xhost +SI:localuser:$(whoami)
+```
