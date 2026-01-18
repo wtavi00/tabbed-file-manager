@@ -503,3 +503,32 @@ class FileManagerTab:
                 p = p / seg
             return p
 
+
+    # ----------------------- List methods ----------------------- #
+    def populate_list(self, directory: Path):
+        # Use caching to avoid re-statting too often
+        try:
+            self.list.delete(*self.list.get_children(''))
+            entries = sorted(list(directory.iterdir()), key=lambda x: (not x.is_dir(), x.name.lower()))
+        except Exception as e:
+            messagebox.showerror('Access Denied', f'Cannot access folder:\n{directory}\n\n{e}')
+            return
+
+        # Batch insert for performance
+        for p in entries:
+            if is_hidden(p):
+                continue
+            try:
+                st = p.stat()
+                mod = time.strftime('%Y-%m-%d %H:%M', time.localtime(st.st_mtime))
+                if p.is_dir():
+                    size = '<DIR>'
+                    typ = 'Folder'
+                else:
+                    size = human_size(st.st_size)
+                    typ = p.suffix[1:].upper() + ' File' if p.suffix else 'File'
+                safe_iid = str(p).replace('\\', '/')
+                self.list.insert('', 'end', iid=safe_iid, values=(size, typ, mod), text=p.name)
+            except Exception:
+                pass
+        self.update_status()
