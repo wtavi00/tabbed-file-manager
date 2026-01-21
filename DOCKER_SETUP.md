@@ -175,3 +175,15 @@ volumes:
 # More secure: Allow only specific user
 xhost +SI:localuser:$(whoami)
 ```
+
+## Alternative: Run Without Docker
+
+For the best experience, skip Docker and run directly:
+
+```bash
+# Install dependencies
+pip install Pillow
+
+# Run the application
+python main.py
+```
