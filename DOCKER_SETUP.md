@@ -187,3 +187,16 @@ pip install Pillow
 # Run the application
 python main.py
 ```
+
+This provides:
+- Better performance
+- Native file system access
+- No X11 configuration needed
+- Simpler setup
+
+## Support
+
+For issues specific to Docker setup, check:
+- Docker logs: `docker-compose logs`
+- X11 connection: `echo $DISPLAY`
+- XQuartz/X11 server status
