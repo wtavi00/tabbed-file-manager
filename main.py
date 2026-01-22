@@ -532,3 +532,20 @@ class FileManagerTab:
             except Exception:
                 pass
         self.update_status()
+
+    def current_selection(self) -> List[Path]:
+        items = self.list.selection()
+        return [Path(iid.replace('/', os.sep)) for iid in items]
+
+    # ----------------------------- Actions ----------------------------- #
+    def show_context_menu(self, event):
+        try:
+            iid = self.list.identify_row(event.y)
+            if iid:
+                self.list.selection_set(iid)
+            self.menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            try:
+                self.menu.grab_release()
+            except Exception:
+                pass
