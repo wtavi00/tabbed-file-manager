@@ -69,3 +69,11 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 - Select items and press Delete key
 - Or click the "Delete" button
 - Confirm the deletion when prompted
+
+### Advanced Operations
+
+**Creating ZIP Archives**
+1. Select files/folders to archive
+2. Go to Tools > Create ZIP of selection
+3. Choose save location and filename
+4. 
