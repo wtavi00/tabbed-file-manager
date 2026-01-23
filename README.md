@@ -76,4 +76,8 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 1. Select files/folders to archive
 2. Go to Tools > Create ZIP of selection
 3. Choose save location and filename
-4. 
+
+**Extracting ZIP Files**
+1. Go to Tools > Extract ZIP
+2. Select the ZIP file
+3. Choose the extraction destination
