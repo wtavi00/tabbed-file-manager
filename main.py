@@ -549,3 +549,15 @@ class FileManagerTab:
                 self.menu.grab_release()
             except Exception:
                 pass
+
+    def new_folder(self):
+        name = simpledialog.askstring('New Folder', 'Folder name:', parent=self.parent)
+        if not name:
+            return
+        target = self.current_dir / name
+        try:
+            target.mkdir(parents=False, exist_ok=False)
+            self.refresh()
+        except Exception as e:
+            messagebox.showerror('Create Failed', f'Could not create folder:\n{target}\n\n{e}')
+
