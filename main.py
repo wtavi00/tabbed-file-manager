@@ -561,3 +561,19 @@ class FileManagerTab:
         except Exception as e:
             messagebox.showerror('Create Failed', f'Could not create folder:\n{target}\n\n{e}')
 
+    def rename_selected(self):
+        sel = self.current_selection()
+        if not sel:
+            messagebox.showinfo('Rename', 'Select a file or folder to rename.')
+            return
+        src = sel[0]
+        new_name = simpledialog.askstring('Rename', f"New name for '{src.name}':", initialvalue=src.name, parent=self.parent)
+        if not new_name:
+            return
+        dst = src.parent / new_name
+        try:
+            src.rename(dst)
+            self.refresh()
+        except Exception as e:
+            messagebox.showerror('Rename Failed', f'Could not rename:\n{src}\n→ {dst}\n\n{e}')
+
