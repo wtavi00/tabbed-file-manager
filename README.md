@@ -81,3 +81,11 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 1. Go to Tools > Extract ZIP
 2. Select the ZIP file
 3. Choose the extraction destination
+
+**Searching for Files**
+1. Click the "Search" button
+2. Choose starting directory
+3. Enter filename pattern (supports wildcards: `*.txt`, `file?.doc`)
+4. Double-click results to navigate to the file location
+
+   
