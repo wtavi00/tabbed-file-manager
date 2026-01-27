@@ -88,4 +88,8 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 3. Enter filename pattern (supports wildcards: `*.txt`, `file?.doc`)
 4. Double-click results to navigate to the file location
 
+**Using Multiple Tabs**
+- Press `Ctrl+T` to open a new tab
+- Press `Ctrl+O` to open a folder in a new tab
+- Click the "File" menu for tab management options
    
