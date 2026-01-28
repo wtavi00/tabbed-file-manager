@@ -93,3 +93,14 @@ Cross-platform, Python-based file manager built with Tkinter. It includes featur
 - Press `Ctrl+O` to open a folder in a new tab
 - Click the "File" menu for tab management options
    
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+T` | New tab |
+| `Ctrl+O` | Open folder dialog |
+| `Return` | Open selected file/folder |
+| `Delete` | Delete selected items |
+| `Double-click` | Open file/folder |
+| `Right-click` | Show context menu |
+
