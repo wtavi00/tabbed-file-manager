@@ -127,3 +127,4 @@ main.py
     └── File operations
 ```
 
+## Known Limitations
