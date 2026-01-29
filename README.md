@@ -110,3 +110,5 @@ The file manager is cross-platform and supports:
 - **Windows**: Full support with drive detection
 - **macOS**: Full support with native file opening
 - **Linux**: Full support with xdg-open integration
+
+## File Structure
