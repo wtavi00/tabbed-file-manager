@@ -126,3 +126,4 @@ main.py
     ├── Navigation controls
     └── File operations
 ```
+
