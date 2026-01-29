@@ -127,4 +127,11 @@ main.py
     └── File operations
 ```
 
+## Background Operations
+
+The application uses a worker thread for time-consuming operations:
+- **ZIP creation**: Archive files without freezing the UI
+- **ZIP extraction**: Extract archives in the background
+- **File search**: Search large directory trees asynchronously
+
 ## Known Limitations
