@@ -135,3 +135,11 @@ The application uses a worker thread for time-consuming operations:
 - **File search**: Search large directory trees asynchronously
 
 ## Known Limitations
+
+- Image previews require Pillow to be installed
+- Text file previews are limited to 200 KB
+- Search results are capped at 5,000 items
+- Hidden files are not shown (can be modified in code)
+- Browser storage APIs (localStorage) are not used
+
+  
