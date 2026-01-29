@@ -112,3 +112,17 @@ The file manager is cross-platform and supports:
 - **Linux**: Full support with xdg-open integration
 
 ## File Structure
+```
+main.py
+├── FileManagerApp (Main application class)
+│   ├── Tab management
+│   ├── Background task handling
+│   └── Global clipboard
+│
+└── FileManagerTab (Individual tab class)
+    ├── Tree view (folder hierarchy)
+    ├── File list view
+    ├── Preview pane
+    ├── Navigation controls
+    └── File operations
+```
