@@ -590,3 +590,16 @@ class FileManagerTab:
             safe_remove(p)
         self.refresh()
 
+    def delete_selected(self):
+        sel = self.current_selection()
+        if not sel:
+            messagebox.showinfo('Delete', 'Select one or more items to delete.')
+            return
+        names = '\n'.join(p.name for p in sel[:10])
+        extra = '\n...' if len(sel) > 10 else ''
+        if not messagebox.askyesno('Confirm Delete', f'Delete {len(sel)} item(s)?\n\n{names}{extra}', icon=messagebox.WARNING, default=messagebox.NO):
+            return
+        for p in sel:
+            safe_remove(p)
+        self.refresh()
+        
