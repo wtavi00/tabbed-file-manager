@@ -603,3 +603,12 @@ class FileManagerTab:
             safe_remove(p)
         self.refresh()
         
+    def copy_or_cut(self, action: str):
+        sel = self.current_selection()
+        if not sel:
+            messagebox.showinfo(action.title(), f'Select one or more items to {action}.')
+            return
+        # store multiple
+        self.app.clipboard_items = [(p, action) for p in sel]
+        self.update_status(f"Ready to {action} {len(sel)} item(s)")
+        
