@@ -147,3 +147,8 @@ The application uses a worker thread for time-consuming operations:
 **Application won't start**
 - Ensure Python 3.7+ is installed
 - Verify tkinter is available: `python -m tkinter`
+
+**Images don't preview**
+- Install Pillow: `pip install Pillow`
+
+  
