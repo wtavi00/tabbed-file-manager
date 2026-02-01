@@ -142,4 +142,8 @@ The application uses a worker thread for time-consuming operations:
 - Hidden files are not shown (can be modified in code)
 - Browser storage APIs (localStorage) are not used
 
-  
+## Troubleshooting
+
+**Application won't start**
+- Ensure Python 3.7+ is installed
+- Verify tkinter is available: `python -m tkinter`
