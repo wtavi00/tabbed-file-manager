@@ -612,3 +612,24 @@ class FileManagerTab:
         self.app.clipboard_items = [(p, action) for p in sel]
         self.update_status(f"Ready to {action} {len(sel)} item(s)")
         
+    def paste_here(self):
+        if not self.app.clipboard_items:
+            messagebox.showinfo('Paste', 'Clipboard is empty.')
+            return
+        for src, action in list(self.app.clipboard_items):
+            dst = self.current_dir / src.name
+            try:
+                if dst.exists():
+                    dst = self._unique_name(dst)
+                if action == 'copy':
+                    if src.is_dir():
+                        shutil.copytree(src, dst)
+                    else:
+                        shutil.copy2(src, dst)
+                else:
+                    shutil.move(str(src), str(dst))
+                    # remove moved item from clipboard
+                    self.app.clipboard_items.remove((src, action))
+            except Exception as e:
+                messagebox.showerror('Paste Failed', f'Could not paste into:\n{self.current_dir}\n\n{e}')
+        self.refresh()
