@@ -151,4 +151,14 @@ The application uses a worker thread for time-consuming operations:
 **Images don't preview**
 - Install Pillow: `pip install Pillow`
 
-  
+**Images don't preview**
+- Install Pillow: `pip install Pillow`
+
+**Permission errors**
+- Run with appropriate permissions for the directories you're accessing
+- Some system folders may require administrator/root access
+
+**Search not finding files**
+- Verify the starting directory exists
+- Check that your pattern is correct (use `*` as wildcard)
+- Hidden files are excluded from search results
