@@ -633,3 +633,15 @@ class FileManagerTab:
             except Exception as e:
                 messagebox.showerror('Paste Failed', f'Could not paste into:\n{self.current_dir}\n\n{e}')
         self.refresh()
+
+    def _unique_name(self, path: Path) -> Path:
+        stem = path.stem
+        suffix = path.suffix
+        parent = path.parent
+        i = 1
+        while True:
+            candidate = parent / f"{stem} ({i}){suffix}"
+            if not candidate.exists():
+                return candidate
+            i += 1
+
