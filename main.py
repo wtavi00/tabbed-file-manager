@@ -664,3 +664,11 @@ class FileManagerTab:
         dlg.transient(self.parent)
         dlg.grab_set()
 
+        frm = ttk.Frame(dlg, padding=10)
+        frm.pack(fill=tk.BOTH, expand=True)
+
+        ttk.Label(frm, text='Start in:').grid(row=0, column=0, sticky='w')
+        path_var = tk.StringVar(value=str(self.current_dir))
+        path_entry = ttk.Entry(frm, textvariable=path_var, width=50)
+        path_entry.grid(row=0, column=1, sticky='ew', padx=6)
+        ttk.Button(frm, text='Browse', command=lambda: self._browse_dir(path_var)).grid(row=0, column=2)
