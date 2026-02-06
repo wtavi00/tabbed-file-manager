@@ -645,3 +645,13 @@ class FileManagerTab:
                 return candidate
             i += 1
 
+    def open_selected(self):
+        sel = self.current_selection()
+        if not sel:
+            return
+        p = sel[0]
+        if p.is_dir():
+            self.navigate(p)
+        else:
+            # show preview optionally
+            open_with_system(p)
