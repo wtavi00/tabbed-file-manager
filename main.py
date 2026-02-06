@@ -655,3 +655,12 @@ class FileManagerTab:
         else:
             # show preview optionally
             open_with_system(p)
+
+    # ----------------------------- Search (background) ----------------------------- #
+    def open_search_dialog(self):
+        dlg = tk.Toplevel(self.parent)
+        dlg.title('Search')
+        dlg.geometry('520x420')
+        dlg.transient(self.parent)
+        dlg.grab_set()
+
