@@ -672,3 +672,22 @@ class FileManagerTab:
         path_entry = ttk.Entry(frm, textvariable=path_var, width=50)
         path_entry.grid(row=0, column=1, sticky='ew', padx=6)
         ttk.Button(frm, text='Browse', command=lambda: self._browse_dir(path_var)).grid(row=0, column=2)
+
+        ttk.Label(frm, text='Name pattern:').grid(row=1, column=0, sticky='w', pady=(8, 0))
+        patt_var = tk.StringVar(value='*')
+        patt_entry = ttk.Entry(frm, textvariable=patt_var)
+        patt_entry.grid(row=1, column=1, sticky='ew', padx=6, pady=(8, 0))
+
+        results = tk.Listbox(frm)
+        results.grid(row=3, column=0, columnspan=3, sticky='nsew', pady=(10, 0))
+        frm.rowconfigure(3, weight=1)
+        frm.columnconfigure(1, weight=1)
+
+        btns = ttk.Frame(frm)
+        btns.grid(row=4, column=0, columnspan=3, sticky='ew', pady=8)
+        ttk.Button(btns, text='Search', command=lambda: self._start_search(path_var.get(), patt_var.get(), results)).pack(side=tk.LEFT)
+        ttk.Button(btns, text='Open Location', command=lambda: self._open_search_result(results)).pack(side=tk.LEFT, padx=6)
+        ttk.Button(btns, text='Close', command=dlg.destroy).pack(side=tk.RIGHT)
+
+        results.bind('<Double-Button-1>', lambda e: self._open_search_result(results))
+        
