@@ -703,3 +703,17 @@ class FileManagerTab:
             messagebox.showerror('Search', 'Start folder does not exist.')
             return
         listbox.insert(tk.END, 'Searching...')
+        
+        def do_search():
+            results = []
+            count = 0
+            for root, dirs, files in os.walk(start_path):
+                dirs[:] = [d for d in dirs if not is_hidden(Path(root) / d)]
+                for name in files + dirs:
+                    if fnmatch.fnmatch(name, pattern):
+                        full = os.path.join(root, name)
+                        results.append(full)
+                        count += 1
+                        if count >= 5000:
+                            results.append('… (results truncated)')
+                            return results
