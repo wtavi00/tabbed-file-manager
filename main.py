@@ -696,3 +696,10 @@ class FileManagerTab:
         if d:
             var.set(d)
 
+    def _start_search(self, start: str, pattern: str, listbox: tk.Listbox):
+        start_path = Path(start)
+        listbox.delete(0, tk.END)
+        if not start_path.exists():
+            messagebox.showerror('Search', 'Start folder does not exist.')
+            return
+        listbox.insert(tk.END, 'Searching...')
