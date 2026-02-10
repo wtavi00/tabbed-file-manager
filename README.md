@@ -159,3 +159,18 @@ The application uses a worker thread for time-consuming operations:
 - Verify the starting directory exists
 - Check that your pattern is correct (use `*` as wildcard)
 - Hidden files are excluded from search results
+
+## Contributing
+
+Contributions are welcome! Areas for improvement:
+- Additional file type previews
+- More archive format support
+- File transfer progress indicators
+- Network drive support enhancements
+- Theme customization
+
+## License
+This project is provided as-is for educational and personal use.[Apache License 2.0](https://github.com/wtavi00/tabbed-file-manager/blob/main/LICENSE)
+
+## Author
+[AVIJIT](https://github.com/wtavi00)
