@@ -691,3 +691,8 @@ class FileManagerTab:
 
         results.bind('<Double-Button-1>', lambda e: self._open_search_result(results))
         
+    def _browse_dir(self, var: tk.StringVar):
+        d = filedialog.askdirectory(initialdir=var.get() or str(self.current_dir))
+        if d:
+            var.set(d)
+
