@@ -717,3 +717,19 @@ class FileManagerTab:
                         if count >= 5000:
                             results.append('… (results truncated)')
                             return results
+            if not results:
+                return ['No matches found.']
+            return results
+
+        def on_done(results):
+            listbox.delete(0, tk.END)
+            for r in results:
+                listbox.insert(tk.END, r)
+
+        # enqueue search and post callback via result queue
+        def worker_fn():
+            res = do_search()
+            self.app.result_q.put((lambda r=res: on_done(r), ()))
+
+        threading.Thread(target=worker_fn, daemon=True).start()
+        
