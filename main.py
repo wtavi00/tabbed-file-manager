@@ -733,3 +733,22 @@ class FileManagerTab:
 
         threading.Thread(target=worker_fn, daemon=True).start()
         
+    def _open_search_result(self, listbox: tk.Listbox):
+        sel = listbox.curselection()
+        if not sel:
+            return
+        item = listbox.get(sel[0])
+        if not os.path.exists(item) or str(item).endswith('… (results truncated)'):
+            return
+        p = Path(item)
+        if p.is_dir():
+            self.navigate(p)
+        else:
+            self.navigate(p.parent)
+            try:
+                safe_iid = str(p).replace('\\', '/')
+                self.list.selection_set(safe_iid)
+                self.list.see(safe_iid)
+            except Exception:
+                pass
+                
