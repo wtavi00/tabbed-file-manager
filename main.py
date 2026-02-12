@@ -769,3 +769,10 @@ class FileManagerTab:
         self.populate_tree_root(path)
         self.populate_list(path)
         self.update_status()
+
+    def go_back(self):
+        if len(self._history) > 1:
+            current = self._history.pop()
+            self._future.append(current)
+            self.navigate(self._history[-1], record_history=False)
+            
