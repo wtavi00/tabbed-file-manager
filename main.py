@@ -752,3 +752,20 @@ class FileManagerTab:
             except Exception:
                 pass
                 
+    # ----------------------------- Navigation ----------------------------- #
+    def navigate(self, path: Path, record_history: bool = True):
+        path = path.resolve()
+        if not path.exists() or not path.is_dir():
+            messagebox.showerror('Invalid Path', f'Folder not found:\n{path}')
+            return
+        if record_history:
+            if self._history and self._history[-1] == path:
+                pass
+            else:
+                self._history.append(path)
+                self._future.clear()
+        self.current_dir = path
+        self.address_var.set(str(path))
+        self.populate_tree_root(path)
+        self.populate_list(path)
+        self.update_status()
