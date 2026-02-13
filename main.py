@@ -776,3 +776,9 @@ class FileManagerTab:
             self._future.append(current)
             self.navigate(self._history[-1], record_history=False)
             
+    def go_forward(self):
+        if self._future:
+            nxt = self._future.pop()
+            self._history.append(nxt)
+            self.navigate(nxt, record_history=False)
+            
