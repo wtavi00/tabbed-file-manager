@@ -786,3 +786,6 @@ class FileManagerTab:
         parent = self.current_dir.parent
         self.navigate(parent)
 
+    def go_to_address(self):
+        self.navigate(Path(self.address_var.get()))
+
