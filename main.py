@@ -782,3 +782,7 @@ class FileManagerTab:
             self._history.append(nxt)
             self.navigate(nxt, record_history=False)
             
+    def go_up(self):
+        parent = self.current_dir.parent
+        self.navigate(parent)
+
