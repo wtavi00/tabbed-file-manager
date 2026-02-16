@@ -789,3 +789,8 @@ class FileManagerTab:
     def go_to_address(self):
         self.navigate(Path(self.address_var.get()))
 
+
+    def refresh(self):
+        self.populate_tree_root(self.current_dir)
+        self.populate_list(self.current_dir)
+        self.update_status('Refreshed')
