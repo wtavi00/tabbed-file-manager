@@ -794,3 +794,14 @@ class FileManagerTab:
         self.populate_tree_root(self.current_dir)
         self.populate_list(self.current_dir)
         self.update_status('Refreshed')
+
+    # ----------------------------- Preview ----------------------------- #
+    def _show_preview_for(self, p: Path):
+        # Clear preview label
+        for child in getattr(self, '_preview_children', []):
+            try:
+                child.destroy()
+            except Exception:
+                pass
+        self._preview_children = []
+        
