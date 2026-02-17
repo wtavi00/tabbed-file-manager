@@ -810,3 +810,17 @@ class FileManagerTab:
             lbl.grid()
             self._preview_children.append(lbl)
             return
+
+        if _HAS_PIL and p.suffix.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp'):
+            try:
+                im = Image.open(p)
+                im.thumbnail((800, 600))
+                tkim = ImageTk.PhotoImage(im)
+                lbl = ttk.Label(self.parent, image=tkim)
+                lbl.image = tkim
+                lbl.grid()
+                self._preview_children.append(lbl)
+                return
+            except Exception:
+                pass
+
