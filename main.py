@@ -805,3 +805,8 @@ class FileManagerTab:
                 pass
         self._preview_children = []
         
+        if p.is_dir():
+            lbl = ttk.Label(self.parent, text=f"Folder: {p.name}\n{len(list(p.iterdir()))} items", anchor='nw')
+            lbl.grid()
+            self._preview_children.append(lbl)
+            return
