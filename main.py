@@ -834,3 +834,10 @@ class FileManagerTab:
                 txt_widget.grid(sticky='nsew')
                 self._preview_children.append(txt_widget)
                 return
+        except Exception:
+            pass
+
+        lbl = ttk.Label(self.parent, text=f"No preview available for: {p.name}", anchor='nw')
+        lbl.grid()
+        self._preview_children.append(lbl)
+
