@@ -823,4 +823,14 @@ class FileManagerTab:
                 return
             except Exception:
                 pass
-
+        # Text preview for small files
+        try:
+            if p.stat().st_size < 200 * 1024:  # 200 KB limit for preview
+                with p.open('r', errors='ignore') as f:
+                    txt = f.read(10000)
+                txt_widget = tk.Text(self.parent, wrap='word', height=20)
+                txt_widget.insert('1.0', txt)
+                txt_widget.configure(state='disabled')
+                txt_widget.grid(sticky='nsew')
+                self._preview_children.append(txt_widget)
+                return
