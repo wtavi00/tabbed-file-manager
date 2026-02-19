@@ -841,3 +841,12 @@ class FileManagerTab:
         lbl.grid()
         self._preview_children.append(lbl)
 
+    
+    # ----------------------------- Drag & Drop (simple internal) ----------------------------- #
+    def _on_list_button_press(self, event):
+        iid = self.list.identify_row(event.y)
+        if iid:
+            self._drag_start_iid = iid
+        else:
+            self._drag_start_iid = None
+        self._dragging = False
