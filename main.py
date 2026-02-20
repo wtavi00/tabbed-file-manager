@@ -850,3 +850,13 @@ class FileManagerTab:
         else:
             self._drag_start_iid = None
         self._dragging = False
+
+    def _on_list_b1_motion(self, event):
+        if not self._drag_start_iid:
+            return
+        self._dragging = True
+        # change cursor to indicate drag
+        try:
+            self.list.configure(cursor='hand2')
+        except Exception:
+            pass
