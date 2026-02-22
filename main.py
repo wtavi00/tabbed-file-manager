@@ -860,3 +860,15 @@ class FileManagerTab:
             self.list.configure(cursor='hand2')
         except Exception:
             pass
+
+    def _on_list_button_release(self, event):
+        try:
+            self.list.configure(cursor='')
+        except Exception:
+            pass
+        if not self._dragging or not self._drag_start_iid:
+            return
+        # find tree node under pointer
+        x_root = event.x_root
+        y_root = event.y_root
+        
