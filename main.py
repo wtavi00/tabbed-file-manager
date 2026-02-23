@@ -888,3 +888,8 @@ class FileManagerTab:
                     dst = self._unique_name(dst)
                 shutil.move(str(src), str(dst))
                 self.refresh()
+            except Exception as e:
+                messagebox.showerror('Move Failed', str(e))
+        self._drag_start_iid = None
+        self._dragging = False
+
