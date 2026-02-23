@@ -882,3 +882,9 @@ class FileManagerTab:
             node = self.tree.focus()
             dest = self.get_node_path(node) if node else self.current_dir
             src = Path(self._drag_start_iid.replace('/', os.sep))
+            try:
+                dst = dest / src.name
+                if dst.exists():
+                    dst = self._unique_name(dst)
+                shutil.move(str(src), str(dst))
+                self.refresh()
