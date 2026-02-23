@@ -871,4 +871,14 @@ class FileManagerTab:
         # find tree node under pointer
         x_root = event.x_root
         y_root = event.y_root
-        
+
+        widget = self.list.winfo_containing(x_root, y_root)
+        # if released over tree, move
+        if widget and str(widget).startswith(str(self.tree)):
+            # determine target node by screen coords
+            rel_y = self.tree.winfo_rooty()
+            rel_x = self.tree.winfo_rootx()
+            # approximate: get the focused node or selected
+            node = self.tree.focus()
+            dest = self.get_node_path(node) if node else self.current_dir
+            src = Path(self._drag_start_iid.replace('/', os.sep))
