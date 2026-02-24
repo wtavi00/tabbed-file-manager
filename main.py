@@ -20,10 +20,10 @@ from tkinter import ttk, messagebox, simpledialog, filedialog
 
 # Optional: Pillow for image previews
 try:
-from PIL import Image, ImageTk
-_HAS_PIL = True
+    from PIL import Image, ImageTk
+    _HAS_PIL = True
 except Exception:
-_HAS_PIL = False
+    _HAS_PIL = False
 
 # ----------------------------- Utilities ----------------------------- #
 
@@ -34,16 +34,18 @@ def human_size(num: int) -> str:
         num /= 1024.0
     return f"{num:.1f} EB"
 
-def open_with_systtem(path: Path) -> None:
+
+def open_with_system(path: Path) -> None:
     try:
-        if platform .system() == "Windows":
-            os.startfile(str(path))
+        if platform.system() == "Windows":
+            os.startfile(str(path))  # type: ignore[attr-defined]
         elif platform.system() == "Darwin":
-            subprocess.run(["open",str(path)], check=False)
+            subprocess.run(["open", str(path)], check=False)
         else:
-            subprocess.run("xdg-open",str(path)], Check=False)
+            subprocess.run(["xdg-open", str(path)], check=False)
     except Exception as e:
-        messagebox.showerror("Open Failed", f"could not open:\n{path}\n\n{e}")
+        messagebox.showerror("Open Failed", f"Could not open:\n{path}\n\n{e}")
+
 
 def safe_remove(path: Path) -> None:
     if not path.exists():
@@ -65,6 +67,7 @@ def safe_remove(path: Path) -> None:
             path.unlink()
     except Exception as e:
         messagebox.showerror("Delete Failed", f"Could not delete:\n{path}\n\n{e}")
+
 
 def is_hidden(p: Path) -> bool:
     try:
@@ -110,7 +113,7 @@ class WorkerThread(threading.Thread):
 
     def stop(self):
         self._stop.set()
-        
+
 # ----------------------------- Main App ----------------------------- #
 class FileManagerApp(tk.Tk):
     def __init__(self):
@@ -141,7 +144,7 @@ class FileManagerApp(tk.Tk):
 
         # Poll for background results
         self.after(100, self._poll_results)
-        
+
     def create_menus(self):
         menubar = tk.Menu(self)
         file_menu = tk.Menu(menubar, tearoff=False)
@@ -224,7 +227,7 @@ class FileManagerApp(tk.Tk):
 
         self.work_q.put((do_extract, (), {}))
         messagebox.showinfo("Extract", f"Extracting {pathp} to {destp} in background.")
-        
+
     def _current_tab(self) -> Optional['FileManagerTab']:
         if not self.notebook.tabs():
             return None
@@ -258,6 +261,7 @@ class FileManagerApp(tk.Tk):
         except Exception:
             pass
         super().quit()
+
 
 class FileManagerTab:
     def __init__(self, parent, start_path: Path, app: FileManagerApp):
@@ -314,7 +318,6 @@ class FileManagerTab:
         action_bar = ttk.Frame(right)
         action_bar.grid(row=0, column=0, sticky='ew', pady=(4, 0))
         action_bar.columnconfigure(10, weight=1)
-        
         ttk.Button(action_bar, text="New Folder", command=self.new_folder).grid(row=0, column=0, padx=2)
         ttk.Button(action_bar, text="Rename", command=self.rename_selected).grid(row=0, column=1, padx=2)
         ttk.Button(action_bar, text="Delete", command=self.delete_selected).grid(row=0, column=2, padx=2)
@@ -332,68 +335,54 @@ class FileManagerTab:
         list_frame = ttk.Frame(inner_paned)
         list_frame.columnconfigure(0, weight=1)
         list_frame.rowconfigure(0, weight=1)
-        
         self.list = ttk.Treeview(list_frame, columns=("size", "type", "modified"), show='headings', selectmode='extended')
         self.list.heading('size', text='Size')
         self.list.heading('type', text='Type')
         self.list.heading('modified', text='Modified')
-        
         self.list.column('size', width=100, anchor=tk.E)
         self.list.column('type', width=140, anchor=tk.W)
         self.list.column('modified', width=160, anchor=tk.W)
-        
         self.list.bind('<Double-1>', lambda e: self.open_selected())
         self.list.bind('<Return>', lambda e: self.open_selected())
         self.list.bind('<Delete>', lambda e: self.delete_selected())
         self.list.bind('<<TreeviewSelect>>', lambda e: self.update_status())
         self.list.bind('<Button-3>', self.show_context_menu)
-        
         # enable simple drag (start)
         self.list.bind('<ButtonPress-1>', self._on_list_button_press)
         self.list.bind('<B1-Motion>', self._on_list_b1_motion)
         self.list.bind('<ButtonRelease-1>', self._on_list_button_release)
-        
+
         list_scroll_y = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.list.yview)
         list_scroll_x = ttk.Scrollbar(list_frame, orient=tk.HORIZONTAL, command=self.list.xview)
-        
         self.list.configure(yscrollcommand=list_scroll_y.set, xscrollcommand=list_scroll_x.set)
         self.list.grid(row=0, column=0, sticky='nsew')
-        
         list_scroll_y.grid(row=0, column=1, sticky='ns')
         list_scroll_x.grid(row=1, column=0, sticky='ew')
-        
         inner_paned.add(list_frame, weight=3)
 
         # Preview pane
         preview_frame = ttk.Frame(inner_paned)
         preview_frame.columnconfigure(0, weight=1)
         preview_frame.rowconfigure(0, weight=1)
-        
         self.preview_label = ttk.Label(preview_frame, text='Preview', anchor='center')
         self.preview_label.grid(row=0, column=0, sticky='nsew')
-        
         inner_paned.add(preview_frame, weight=2)
 
         main_paned.add(right, weight=3)
-        
+
         # Status bar
         self.status_var = tk.StringVar(value='Ready')
-        
         status = ttk.Label(parent, textvariable=self.status_var, anchor=tk.W, relief=tk.SUNKEN, padding=(8, 4))
         status.pack(fill=tk.X)
 
         # Context menu
         self.menu = tk.Menu(parent, tearoff=False)
         self.menu.add_command(label='Open', command=self.open_selected)
-        
         self.menu.add_separator()
-        
         self.menu.add_command(label='Copy', command=lambda: self.copy_or_cut('copy'))
         self.menu.add_command(label='Cut', command=lambda: self.copy_or_cut('cut'))
         self.menu.add_command(label='Paste', command=self.paste_here)
-        
         self.menu.add_separator()
-        
         self.menu.add_command(label='Rename', command=self.rename_selected)
         self.menu.add_command(label='Delete', command=self.delete_selected)
         self.menu.add_command(label='Create ZIP', command=self.create_zip_of_selection)
@@ -405,7 +394,7 @@ class FileManagerTab:
         # Variables for drag
         self._drag_start_iid = None
         self._dragging = False
-        
+
     # ----------------------- Tree methods ----------------------- #
     def populate_tree_root(self, focus_path: Path):
         self.tree.delete(*self.tree.get_children(''))
@@ -439,6 +428,7 @@ class FileManagerTab:
         else:
             parent = self.tree.get_children('')[0]
             start_index = 1
+
         for p in parts[start_index:]:
             self.on_tree_open_node(parent)
             found = None
@@ -459,7 +449,7 @@ class FileManagerTab:
     def on_tree_open(self, event=None):
         node = self.tree.focus()
         self.on_tree_open_node(node)
-        
+
     def on_tree_open_node(self, node):
         children = self.tree.get_children(node)
         if not children:
@@ -502,7 +492,6 @@ class FileManagerTab:
             for seg in parts[1:]:
                 p = p / seg
             return p
-
 
     # ----------------------- List methods ----------------------- #
     def populate_list(self, directory: Path):
@@ -590,19 +579,6 @@ class FileManagerTab:
             safe_remove(p)
         self.refresh()
 
-    def delete_selected(self):
-        sel = self.current_selection()
-        if not sel:
-            messagebox.showinfo('Delete', 'Select one or more items to delete.')
-            return
-        names = '\n'.join(p.name for p in sel[:10])
-        extra = '\n...' if len(sel) > 10 else ''
-        if not messagebox.askyesno('Confirm Delete', f'Delete {len(sel)} item(s)?\n\n{names}{extra}', icon=messagebox.WARNING, default=messagebox.NO):
-            return
-        for p in sel:
-            safe_remove(p)
-        self.refresh()
-        
     def copy_or_cut(self, action: str):
         sel = self.current_selection()
         if not sel:
@@ -611,7 +587,7 @@ class FileManagerTab:
         # store multiple
         self.app.clipboard_items = [(p, action) for p in sel]
         self.update_status(f"Ready to {action} {len(sel)} item(s)")
-        
+
     def paste_here(self):
         if not self.app.clipboard_items:
             messagebox.showinfo('Paste', 'Clipboard is empty.')
@@ -690,7 +666,7 @@ class FileManagerTab:
         ttk.Button(btns, text='Close', command=dlg.destroy).pack(side=tk.RIGHT)
 
         results.bind('<Double-Button-1>', lambda e: self._open_search_result(results))
-        
+
     def _browse_dir(self, var: tk.StringVar):
         d = filedialog.askdirectory(initialdir=var.get() or str(self.current_dir))
         if d:
@@ -703,7 +679,7 @@ class FileManagerTab:
             messagebox.showerror('Search', 'Start folder does not exist.')
             return
         listbox.insert(tk.END, 'Searching...')
-        
+
         def do_search():
             results = []
             count = 0
@@ -717,6 +693,7 @@ class FileManagerTab:
                         if count >= 5000:
                             results.append('… (results truncated)')
                             return results
+
             if not results:
                 return ['No matches found.']
             return results
@@ -732,7 +709,7 @@ class FileManagerTab:
             self.app.result_q.put((lambda r=res: on_done(r), ()))
 
         threading.Thread(target=worker_fn, daemon=True).start()
-        
+
     def _open_search_result(self, listbox: tk.Listbox):
         sel = listbox.curselection()
         if not sel:
@@ -751,7 +728,7 @@ class FileManagerTab:
                 self.list.see(safe_iid)
             except Exception:
                 pass
-                
+
     # ----------------------------- Navigation ----------------------------- #
     def navigate(self, path: Path, record_history: bool = True):
         path = path.resolve()
@@ -775,20 +752,19 @@ class FileManagerTab:
             current = self._history.pop()
             self._future.append(current)
             self.navigate(self._history[-1], record_history=False)
-            
+
     def go_forward(self):
         if self._future:
             nxt = self._future.pop()
             self._history.append(nxt)
             self.navigate(nxt, record_history=False)
-            
+
     def go_up(self):
         parent = self.current_dir.parent
         self.navigate(parent)
 
     def go_to_address(self):
         self.navigate(Path(self.address_var.get()))
-
 
     def refresh(self):
         self.populate_tree_root(self.current_dir)
@@ -804,7 +780,7 @@ class FileManagerTab:
             except Exception:
                 pass
         self._preview_children = []
-        
+
         if p.is_dir():
             lbl = ttk.Label(self.parent, text=f"Folder: {p.name}\n{len(list(p.iterdir()))} items", anchor='nw')
             lbl.grid()
@@ -823,6 +799,7 @@ class FileManagerTab:
                 return
             except Exception:
                 pass
+
         # Text preview for small files
         try:
             if p.stat().st_size < 200 * 1024:  # 200 KB limit for preview
@@ -841,7 +818,6 @@ class FileManagerTab:
         lbl.grid()
         self._preview_children.append(lbl)
 
-    
     # ----------------------------- Drag & Drop (simple internal) ----------------------------- #
     def _on_list_button_press(self, event):
         iid = self.list.identify_row(event.y)
@@ -893,6 +869,9 @@ class FileManagerTab:
         self._drag_start_iid = None
         self._dragging = False
 
+    null:
+
+
     # ----------------------------- ZIP helpers (tab-level) ----------------------------- #
     def create_zip_of_selection(self):
         sel = self.current_selection()
@@ -903,7 +882,7 @@ class FileManagerTab:
         if not dest:
             return
         dest_path = Path(dest)
-        
+
         def do_zip():
             with zipfile.ZipFile(dest_path, 'w', zipfile.ZIP_DEFLATED) as zf:
                 for p in sel:
@@ -915,3 +894,7 @@ class FileManagerTab:
                     else:
                         zf.write(p, arcname=str(p.name))
             return None
+
+        self.app.work_q.put((do_zip, (), {}))
+        messagebox.showinfo('ZIP', f'Creating {dest_path} in background.')
+        
