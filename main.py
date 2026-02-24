@@ -18,7 +18,6 @@ from typing import Optional, Tuple, List, Iterable
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog, filedialog
 
-# Optional: Pillow for image previews
 try:
     from PIL import Image, ImageTk
     _HAS_PIL = True
@@ -869,9 +868,6 @@ class FileManagerTab:
         self._drag_start_iid = None
         self._dragging = False
 
-    null:
-
-
     # ----------------------------- ZIP helpers (tab-level) ----------------------------- #
     def create_zip_of_selection(self):
         sel = self.current_selection()
@@ -894,7 +890,6 @@ class FileManagerTab:
                     else:
                         zf.write(p, arcname=str(p.name))
             return None
-
         self.app.work_q.put((do_zip, (), {}))
         messagebox.showinfo('ZIP', f'Creating {dest_path} in background.')
         
