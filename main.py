@@ -893,3 +893,14 @@ class FileManagerTab:
         self._drag_start_iid = None
         self._dragging = False
 
+    # ----------------------------- ZIP helpers (tab-level) ----------------------------- #
+    def create_zip_of_selection(self):
+        sel = self.current_selection()
+        if not sel:
+            messagebox.showinfo('ZIP', 'Select items to archive.')
+            return
+        dest = filedialog.asksaveasfilename(defaultextension='.zip', filetypes=[('ZIP files', '*.zip')])
+        if not dest:
+            return
+        dest_path = Path(dest)
+        
