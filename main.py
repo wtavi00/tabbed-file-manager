@@ -904,3 +904,14 @@ class FileManagerTab:
             return
         dest_path = Path(dest)
         
+        def do_zip():
+            with zipfile.ZipFile(dest_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+                for p in sel:
+                    if p.is_dir():
+                        for root, dirs, files in os.walk(p):
+                            for f in files:
+                                fp = Path(root) / f
+                                zf.write(fp, arcname=str(fp.relative_to(p.parent)))
+                    else:
+                        zf.write(p, arcname=str(p.name))
+            return None
