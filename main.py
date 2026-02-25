@@ -890,6 +890,10 @@ class FileManagerTab:
                     else:
                         zf.write(p, arcname=str(p.name))
             return None
+            
         self.app.work_q.put((do_zip, (), {}))
         messagebox.showinfo('ZIP', f'Creating {dest_path} in background.')
+
+
+    # ----------------------------- Status ----------------------------- #
         
