@@ -896,4 +896,11 @@ class FileManagerTab:
 
 
     # ----------------------------- Status ----------------------------- #
-        
+    def update_status(self, text: Optional[str] = None):
+        if text:
+            self.status_var.set(text)
+            return
+        total = len(self.list.get_children(''))
+        sel = len(self.list.selection())
+        self.status_var.set(f"{total} item(s) — {sel} selected")
+
