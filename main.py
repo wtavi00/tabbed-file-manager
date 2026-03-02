@@ -17,7 +17,6 @@ from typing import Optional, Tuple, List, Iterable
 
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog, filedialog
-
 try:
     from PIL import Image, ImageTk
     _HAS_PIL = True
@@ -76,7 +75,7 @@ def is_hidden(p: Path) -> bool:
             attrs = ctypes.windll.kernel32.GetFileAttributesW(str(p))
             if attrs == -1:
                 return False
-            return bool(attrs & 2)  # FILE_ATTRIBUTE_HIDDEN
+            return bool(attrs & 2)
         else:
             return p.name.startswith('.')
     except Exception:
@@ -101,6 +100,7 @@ class WorkerThread(threading.Thread):
                 continue
             try:
                 res = fn(*args, **kwargs)
+                
                 # Post success result (callable to run in main thread)
                 if self.result_q is not None:
                     self.result_q.put((lambda r=res: r, ()))
@@ -890,10 +890,9 @@ class FileManagerTab:
                     else:
                         zf.write(p, arcname=str(p.name))
             return None
-            
+
         self.app.work_q.put((do_zip, (), {}))
         messagebox.showinfo('ZIP', f'Creating {dest_path} in background.')
-
 
     # ----------------------------- Status ----------------------------- #
     def update_status(self, text: Optional[str] = None):
@@ -904,3 +903,6 @@ class FileManagerTab:
         sel = len(self.list.selection())
         self.status_var.set(f"{total} item(s) — {sel} selected")
 
+if __name__ == '__main__':
+    app = FileManagerApp()
+    app.mainloop()
